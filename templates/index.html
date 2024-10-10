@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Box</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(120deg, #84fab0, #8fd3f4); /* Fresh mint to sky blue gradient */
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            color: #333; /* Darker text for better readability */
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        #chat-box {
+            border: 2px solid #007bff;
+            border-radius: 10px;
+            padding: 20px;
+            height: 400px;
+            width: 350px;
+            overflow-y: scroll;
+            background: white; /* Keeping the chat box white for contrast */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+        .message {
+            margin: 5px 0;
+            padding: 12px 15px;
+            border-radius: 15px;
+            position: relative;
+            max-width: 75%;
+            word-wrap: break-word;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .message:hover {
+            transform: scale(1.02);
+        }
+        .user {
+            background-color: #007bff;
+            color: white;
+            align-self: flex-end;
+            border-bottom-left-radius: 0;
+        }
+        .bot {
+            background-color: #e7e7e7;
+            color: black;
+            align-self: flex-start;
+            border-bottom-right-radius: 0;
+        }
+        form {
+            display: flex;
+            width: 350px;
+            margin-top: 10px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            margin-right: 5px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        input[type="text"]:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            outline: none;
+        }
+        input[type="submit"] {
+            padding: 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+        }
+        @media (max-width: 400px) {
+            #chat-box {
+                width: 100%;
+                height: 300px;
+            }
+            form {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Chat Box</h1>
+    <div id="chat-box">
+        {% for msg in messages %}
+            <div class="message {{ 'user' if msg.startswith('You:') else 'bot' }}">{{ msg }}</div>
+        {% endfor %}
+    </div>
+    <form action="/send" method="POST">
+        <input type="text" name="message" placeholder="Type your message here..." required>
+        <input type="submit" value="Send">
+    </form>
+    <script>
+        // Scroll to the bottom of the chat box when new messages arrive
+        const chatBox = document.getElementById('chat-box');
+        chatBox.scrollTop = chatBox.scrollHeight;
+    </script>
+</body>
+</html>
